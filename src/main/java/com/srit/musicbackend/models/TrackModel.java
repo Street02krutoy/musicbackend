@@ -11,13 +11,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table()
+@Table(name = "tracks")
 @Getter
 @Setter
 public class TrackModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     private String name;
     private int duration;

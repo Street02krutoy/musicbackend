@@ -2,10 +2,13 @@ package com.srit.musicbackend.repositories;
 
 import java.util.UUID;
 
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.srit.musicbackend.models.TrackModel;
 
-public interface TrackRepository extends Repository<TrackModel, UUID>{
+
+@Repository
+public interface TrackRepository extends JpaRepository<TrackModel, String>{
     
 }
