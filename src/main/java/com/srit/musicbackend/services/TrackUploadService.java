@@ -28,7 +28,7 @@ public class TrackUploadService {
 
     TrackRepository trackRepo;
 
-    public ResponseEntity<?> upload(MultipartFile file){
+    public ResponseEntity<?> upload(MultipartFile file, String name){
         TrackModel track = new TrackModel();
 
         File convFile = new File("src/main/resources/static/upload/"+track.getId());
@@ -51,6 +51,6 @@ public class TrackUploadService {
 
         trackRepo.save(track);
 
-        return ResponseEntity.ok(Map.of("status","success"));
+        return ResponseEntity.ok(track);
     }
 }
