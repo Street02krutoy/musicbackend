@@ -3,7 +3,6 @@ package com.srit.musicbackend.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.srit.musicbackend.dtos.TrackDto;
 import com.srit.musicbackend.services.TrackDataService;
 import com.srit.musicbackend.services.TrackUploadService;
 
@@ -28,7 +27,7 @@ public class TrackController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadTrack(@RequestParam("file") MultipartFile file, @RequestParam("name") String name){
+    public ResponseEntity<?> uploadTrack(@RequestParam("file") MultipartFile file, @RequestParam(name = "name") String name){
         return uploadService.upload(file, name);
     }
 

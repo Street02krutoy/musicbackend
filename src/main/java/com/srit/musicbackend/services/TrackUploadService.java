@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -31,9 +32,13 @@ public class TrackUploadService {
     public ResponseEntity<?> upload(MultipartFile file, String name){
         TrackModel track = new TrackModel();
 
-        File convFile = new File("src/main/resources/static/upload/"+track.getId());
+        track.setId(UUID.randomUUID().toString());
 
-        track.setUrl(convFile.getName());
+        track.setName(name);
+
+        File convFile = new File("src/main/resources/static/"+track.getId()+".mp3");
+
+        track.setUrl("/uploads/"+convFile.getName());
 
         
 
@@ -43,9 +48,11 @@ public class TrackUploadService {
             fos.write(file.getBytes());
             fos.close();
 
-            track.setDuration(AudioFileIO.read(convFile).getAudioHeader().getTrackLength());
+            track.setDuration(
+                AudioFileIO.read(convFile).getAudioHeader().getTrackLength()
+                );
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("status", "server error"));
+            return ResponseEntity.status(500).body(Map.of("status", convFile.getAbsolutePath()));
         }
         
 
