@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -29,12 +30,12 @@ public class TrackUploadService {
 
     TrackRepository trackRepo;
 
-    public ResponseEntity<?> upload(MultipartFile file, String name){
+    public ResponseEntity<?> upload(MultipartFile file){
         TrackModel track = new TrackModel();
 
         track.setId(UUID.randomUUID().toString());
 
-        track.setName(name);
+        track.setName("Unnamed");
 
         File convFile = new File("src/main/resources/static/"+track.getId()+".mp3");
 
@@ -52,12 +53,27 @@ public class TrackUploadService {
                 AudioFileIO.read(convFile).getAudioHeader().getTrackLength()
                 );
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("status", convFile.getAbsolutePath()));
+            return ResponseEntity.status(500).body(Map.of("status", "Internal Server Error"));
         }
         
 
         trackRepo.save(track);
 
         return ResponseEntity.ok(track);
+    }
+
+    public ResponseEntity<?> putData(String id, String name){
+        Optional<TrackModel> oModel = trackRepo.findById(id);
+
+        if(!oModel.isPresent()) return ResponseEntity.status(404).body(Map.of("error", "Not Found")); 
+
+        TrackModel model = oModel.get();
+
+        model.setName(name);
+        //TODO add some fields like author
+        
+        trackRepo.save(model);
+
+        return ResponseEntity.ok().body(model);
     }
 }
