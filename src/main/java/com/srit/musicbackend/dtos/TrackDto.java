@@ -1,7 +1,5 @@
 package com.srit.musicbackend.dtos;
 
-import java.util.UUID;
-
 import lombok.Getter;
 import lombok.Setter;
 
